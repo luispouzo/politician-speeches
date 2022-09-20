@@ -1,0 +1,48 @@
+version: "3.9"
+services:
+ postgresdb:
+    build:
+      context: .
+      dockerfile: /src/main/docker/postgres.dockerfile
+#    image: 'postgres:latest'
+    restart: unless-stopped
+    env_file: ./.env
+    environment:
+      - POSTGRES_USER=$POSTGRESDB_USER
+      - POSTGRES_PASSWORD=$POSTGRESDB_PASSWORD
+      - POSTGRES_DB=$POSTGRESDB_DATABASE
+    ports:
+      - $POSTGRESDB_LOCAL_PORT:$POSTGRESDB_DOCKER_PORT
+    volumes:
+      - db:/var/lib/postgresql/data
+ app:
+    depends_on:
+      - postgresdb
+    build:
+      context: .
+      dockerfile: /src/main/docker/Dockerfile
+    restart: on-failure
+    env_file: ./.env
+    ports:
+      - $SPRING_LOCAL_PORT:$SPRING_DOCKER_PORT
+    environment:
+      SPRING_APPLICATION_JSON: '{
+          "apiPrefix": "/api",
+          "springdoc.swagger-ui.path":"/ps-api-ui.html",
+          "spring.datasource.platform": "postgres",
+          "spring.datasource.url": "jdbc:postgresql://postgresdb:$POSTGRESDB_DOCKER_PORT/$POSTGRESDB_DATABASE",
+          "spring.datasource.username": "$POSTGRESDB_USER",
+          "spring.datasource.password": "$POSTGRESDB_PASSWORD",
+          "spring.jpa.properties.hibernate.dialect": "org.hibernate.dialect.PostgreSQL9Dialect",
+          "spring.jpa.hibernate.ddl-auto": "none",
+          "spring.sql.init.mode":"always",
+          "spring.jpa.show-sql": "true",
+          "spring.jpa.properties.hibernate.jdbc.lob.non_contextual_creation": "true",
+          "spring.jpa.properties.hibernate.metadata_builder_contributor": "com.legalsight.politicianspeeches.repository.SqlFunctionsMetadataBuilderContributor"
+      }'
+    volumes:
+      - .m2:/root/.m2
+    stdin_open: true
+    tty: true
+volumes:
+  db:
