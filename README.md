@@ -273,7 +273,7 @@ Request
 ```
 
 ### Exception Handling
-All endpoints customizaed response for the following Http statuses
+All endpoints customized responses for the following HTTP statuses
 * 200 OK
 * 400 Bad Request
 * 404 Not Found
@@ -364,12 +364,11 @@ ALTER TABLE keyword ADD CONSTRAINT FK_KEYWORD_ON_SPEECH FOREIGN KEY (speech_id) 
 
 #### Docker
 
-* `Inside the db-initialization folder is contained  the sql scripts to iniialize the database and to populate with 
-some intial data.
-Those docker-compose use those files`
+* `Inside the db-initialization folder contained the SQL scripts to initialize the database and populate it with some initial data.
+  Those docker-compose use those files`
 * `Inside the src/main/docker folder is contained the docker files to create the docker images`
-* .env file (located in root dir) contains the variables for db connection among others used by docker-compose
-* docker-compose.yml file (located in root dir) contains the docker containers configuration
+* `.env file (located in root dir) contains the variables for db connection among others used by docker-compose 
+  docker-compose.yml file (located in root dir) contains the docker containers configuration`
 
 
 ### Project Setup
@@ -399,13 +398,13 @@ docker-compose up
 docker-compose ps 
 
 # Test the App with a web browser
--- Open a web browser go to http://http://localhost:6868/ps-api-ui.html
+-- Open a web browser go to http://http://localhost:8080/ps-api-ui.html
 ```
 
 ### Project Setup (ALTERNATIVE)
 
-`in case you don't want to run the application using docker, you can run the PoliticianSpeechesApplication class using 
-an IDE like Intellj. In this escenario the database must be up and and configured`
+`in case you don't want to run the application using docker, you can run the PoliticianSpeechesApplication class using
+an IDE like IntelliJ. In this scenario, the database must be up and  configured`
 
 #### Technology Stack
 * Java 17
